@@ -1,0 +1,45 @@
+{
+  "name": "LewdBot Helper",
+  "version": "0.1",
+  "description": "Post an image to a given channel from anywhere!",
+  "permissions" : [
+    "storage",
+    "contextMenus",
+    "tabs",
+    "activeTab",
+    "https://*.twitter.com/*",
+    "https://e621.net/*",
+    "https://*.furaffinity.net/*",
+    "https://u18chan.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.twitter.com/*",
+        "https://e621.net/*",
+        "https://*.furaffinity.net/*",
+        "https://u18chan.com/*"
+      ],
+      "js": ["popup.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background" : {
+    "scripts": ["background.js"],
+    "matches": [
+        "https://*.twitter.com/*",
+        "https://e621.net/*",
+        "https://*.furaffinity.net/*",
+        "https://u18chan.com/*"
+    ]
+  },
+	"icons": {
+    "16": "images/heart_icon_16.png",
+    "32": "images/heart_icon_32.png",
+    "48": "images/heart_icon_48.png",
+    "128": "images/heart_icon_128.png"
+  },
+  "browser_action": { "default_popup": "popup.html" },
+  "manifest_version": 2
+
+}

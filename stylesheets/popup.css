@@ -1,0 +1,43 @@
+body {
+	background-color: rgb(39, 147, 217);
+	color: #fff;
+	margin-top: 0px;
+	width: 300px;
+}
+
+#body {
+	margin: 0 5px 5px 5px;
+}
+
+p, h1, h2, h3, h4, span {
+	font-family: "Open Sans";
+}
+
+#title {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0 0 5px 0;
+
+}
+
+#tg-logo {
+	margin: -2px 4px 0 0;
+
+}
+
+#channel-name {
+	width: 150px;
+}
+
+.add-channel {
+	background-color: rgb(39, 147, 217);
+	margin-bottom: 1rem;
+}
+
+#text-boxes-group {
+	
+}
+
+#channelName1 {
+	width: 100%;
+}
