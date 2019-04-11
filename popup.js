@@ -6,30 +6,9 @@ var channelName = undefined;
 
 try {
 	$(document).ready(function(){
-
-	  /*$("#addButton").click(function () {
-
-			var newTextBoxDiv = $(document.createElement('div')).attr("id", 'channelName' + counter);
-
-			newTextBoxDiv.after().html('<input type="textbox" id="channelName' + counter + 
-			      '" name="channelName' + counter + '" placeholder="Channel Name">');
-
-			newTextBoxDiv.appendTo("#text-boxes-group");
-
-			counter++;
-		});*/
-
+		listChannels();
 		element = document.getElementById("channelName");
-
 		element.addEventListener('keypress', getKeyPress);
-
-		chrome.storage.sync.get('Bot Test', function(result) {
-			if (result == undefined) {
-				return null;
-			} else {
-				element.value = result['Bot Test'];
-			};
-		});
 	});
 }
 catch(error) {
@@ -56,6 +35,18 @@ function saveChanges(textarea) {
 	});
 };
 
+function createListItem(channel) {
+	$("#channelGroup").append('<p class="channel">' + channel + '</p>');
+};
+
+function listChannels() {
+	chrome.storage.sync.get('channelNames', function(result) {
+		result.channelNames.forEach(function(channel) {
+			createListItem(channel);
+		});
+	});
+};
+
 function setChannelData(data) {
 	chrome.storage.sync.set(data, function() {
 	});
@@ -69,15 +60,19 @@ function setChannelName() {
 			if (names == undefined) {
 				names = [channelName];
 				alert('Channel ' + channelName + ' saved.');
+				createListItem(channelName);
 			} else if (names.includes(channelName)) {
 				alert('Channel ' + channelName + ' already exists.')
 				return;
 			} else {
 				names.push(channelName);
 				alert('Channel ' + channelName + ' saved.');
+				createListItem(channelName);
 			};
 			result.channelNames = names;
-			chrome.storage.sync.set({channelNames: result.channelNames});
+			chrome.storage.sync.set({channelNames: result.channelNames}, function() {
+
+			});
 			resolve("success");
 		});
 	});
@@ -96,8 +91,8 @@ function getChannelId(callback) {
 					};
 				});
 			};
-		  	try {
-		  		callback.apply(channelId,[id]);
+				try {
+					callback.apply(channelId,[id]);
 			} catch(error) {
 				console.error(error);
 			};

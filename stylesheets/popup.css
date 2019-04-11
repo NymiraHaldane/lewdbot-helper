@@ -1,12 +1,13 @@
 body {
-	background-color: rgb(39, 147, 217);
+	/*background-color: rgb(39, 147, 217);*/
+	background-color: #333;
 	color: #fff;
 	margin-top: 0px;
 	width: 300px;
 }
 
 #body {
-	margin: 0 5px 5px 5px;
+	margin: 0 8px 8px 8px;
 }
 
 p, h1, h2, h3, h4, span {
@@ -17,27 +18,32 @@ p, h1, h2, h3, h4, span {
 	font-size: 18px;
 	font-weight: bold;
 	margin: 0 0 5px 0;
-
 }
 
-#tg-logo {
-	margin: -2px 4px 0 0;
-
+#telegramLogo {
+	margin: -2px 5px 0 0;
 }
 
-#channel-name {
-	width: 150px;
+#channelGroup {
+	margin-top: 10px;
 }
 
-.add-channel {
-	background-color: rgb(39, 147, 217);
-	margin-bottom: 1rem;
+#channelHeader {
+	font-size: 1.1rem;
+	margin-bottom: 4px;
 }
 
-#text-boxes-group {
-	
+.channel {
+	margin-bottom: 0px;
+	margin-left: 8px;
+	padding-left: 4px;
+	line-height: 1.4;
 }
 
-#channelName1 {
+.channel:hover {
+	background-color: rgba(255,255,255,0.15);
+}
+
+#channelName {
 	width: 100%;
 }
