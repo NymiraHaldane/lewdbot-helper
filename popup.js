@@ -52,6 +52,16 @@ function setChannelData(data) {
 	});
 };
 
+function createChannelMenu(channel) {
+  chrome.contextMenus.create({
+    parentId: "post-image-to-telegram",
+    id: channel,
+    title: 'Post to ' + channel,
+    contexts: ["image"],
+  });
+};
+
+//TODO clean up setChannelName
 function setChannelName() {
 	return new Promise((resolve, reject) => {
 		chrome.storage.sync.get('channelNames', function(result) {
@@ -61,6 +71,7 @@ function setChannelName() {
 				names = [channelName];
 				alert('Channel ' + channelName + ' saved.');
 				createListItem(channelName);
+				createChannelMenu(channelName);
 			} else if (names.includes(channelName)) {
 				alert('Channel ' + channelName + ' already exists.')
 				return;
@@ -68,17 +79,16 @@ function setChannelName() {
 				names.push(channelName);
 				alert('Channel ' + channelName + ' saved.');
 				createListItem(channelName);
+				createChannelMenu(channelName);
 			};
 			result.channelNames = names;
-			chrome.storage.sync.set({channelNames: result.channelNames}, function() {
-
-			});
+			chrome.storage.sync.set({channelNames: result.channelNames});
 			resolve("success");
 		});
 	});
 };
 
-function getChannelId(callback) {
+function getChannelId() {
 	return new Promise((resolve, reject) => {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
@@ -90,11 +100,6 @@ function getChannelId(callback) {
 						resolve(channelId);
 					};
 				});
-			};
-				try {
-					callback.apply(channelId,[id]);
-			} catch(error) {
-				console.error(error);
 			};
 		};
 		xmlhttp.open("GET", "https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/getUpdates", true);
