@@ -50,31 +50,36 @@ function saveChanges(textarea) {
 
 		data[channelName] = channelId;
 
-		chrome.storage.sync.set(data, function() {
-			alert('Channel ' + channelName + ' saved.');
+		setChannelName().then(function(result) {
+			setChannelData(data);
 		});
+	});
+};
 
+function setChannelData(data) {
+	chrome.storage.sync.set(data, function() {
+	});
+};
+
+function setChannelName() {
+	return new Promise((resolve, reject) => {
 		chrome.storage.sync.get('channelNames', function(result) {
 			var names = result.channelNames;
 			result.channelNames = [];
 			if (names == undefined) {
 				names = [channelName];
+				alert('Channel ' + channelName + ' saved.');
 			} else if (names.includes(channelName)) {
+				alert('Channel ' + channelName + ' already exists.')
 				return;
 			} else {
 				names.push(channelName);
+				alert('Channel ' + channelName + ' saved.');
 			};
 			result.channelNames = names;
-			chrome.storage.sync.set({channelNames: result.channelNames}, function() {
-				alert('saved');
-			});
+			chrome.storage.sync.set({channelNames: result.channelNames});
+			resolve("success");
 		});
-	});
-};
-
-function getChannels() {
-	return new Promise((resolve, reject) => {
-
 	});
 };
 

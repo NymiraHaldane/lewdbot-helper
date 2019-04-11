@@ -2,32 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-//accessing map in array
-/*var channelNames = ['Bot Test', 'Good Shit'];
-
-chrome.storage.sync.set({ channelNames: channelNames }, function() {
-    alert('Data saved');
-});
-
-chrome.storage.sync.get('channelNames', function(result) {
-  result.channelNames.forEach(function(name) {
-    alert(name);
-  });
-});
-
-chrome.runtime.onInstalled.addListener(function () {
-  alert("1");
-  chrome.storage.sync.set(channels, function() {
-    alert("2");
-    chrome.storage.sync.get('channels', function(result) {
-      alert(result[0]['Bot Test'] + " 3");
-      result.forEach(function(update) {
-        alert(update['Bot Test'] + " 4")
-      });
-    });
-  });
-});*/
-
 chrome.contextMenus.create({
   id: "post-image-to-telegram",
   title: "Post Image to Telegram",
