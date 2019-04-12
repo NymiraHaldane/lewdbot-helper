@@ -9,6 +9,7 @@ try {
 		listChannels();
 		element = document.getElementById("channelName");
 		element.addEventListener('keypress', getKeyPress);
+
 	});
 }
 catch(error) {
@@ -36,14 +37,25 @@ function saveChanges(textarea) {
 };
 
 function createListItem(channel) {
-	$("#channelGroup").append('<p class="channel">' + channel + '</p>');
+	$("#channelGroup").append('<p class="channel" id="' + channel + '">' + channel + '</p>');
+	document.getElementById(channel).addEventListener('click', function(e) {
+		removeChannel(channel, e)
+	});
+};
+
+function removeChannel(channel, e) {
+	e.target.remove();
 };
 
 function listChannels() {
 	chrome.storage.sync.get('channelNames', function(result) {
-		result.channelNames.forEach(function(channel) {
-			createListItem(channel);
-		});
+		if (result.channelNames == undefined) {
+	    return;
+	  } else {
+	    result.channelNames.forEach(function(channel) {
+				createListItem(channel);
+			});
+	  };
 	});
 };
 
@@ -88,18 +100,32 @@ function setChannelName() {
 	});
 };
 
+function checkChannelExists(result) {
+	return new Promise((resolve, reject) => {
+		var count = 0;
+		result.forEach(function(update) {
+			if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
+				count++;
+				channelId = update.message.chat.id;
+			};
+		});
+		resolve(count)
+	});
+};
+
 function getChannelId() {
 	return new Promise((resolve, reject) => {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var channelData = JSON.parse(this.responseText);
-				channelData.result.forEach(function(update) {
-					if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
-						channelId = update.message.chat.id;
+				checkChannelExists(channelData.result).then(function(result) {
+					if (result > 0) {
 						resolve(channelId);
-					};
-				});
+					} else {
+						alert('Channel ' + channelName + ' not found.')
+					}
+				})
 			};
 		};
 		xmlhttp.open("GET", "https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/getUpdates", true);

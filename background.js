@@ -9,14 +9,18 @@ chrome.contextMenus.create({
 });
 
 chrome.storage.sync.get('channelNames', function(result) {
-  result.channelNames.forEach(function(channel) {
-    chrome.contextMenus.create({
-      parentId: "post-image-to-telegram",
-      id: channel,
-      title: 'Post to ' + channel,
-      contexts: ["image"],
+  if (result.channelNames == undefined) {
+    return;
+  } else {
+    result.channelNames.forEach(function(channel) {
+      chrome.contextMenus.create({
+        parentId: "post-image-to-telegram",
+        id: channel,
+        title: 'Post to ' + channel,
+        contexts: ["image"],
+      });
     });
-  });
+  }
 });
 
 var channelData;
