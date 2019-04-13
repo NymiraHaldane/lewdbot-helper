@@ -20,7 +20,7 @@ chrome.storage.sync.get('channelNames', function(result) {
         contexts: ["image"],
       });
     });
-  }
+  };
 });
 
 var channelData;

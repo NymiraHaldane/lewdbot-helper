@@ -36,11 +36,24 @@ p, h1, h2, h3, h4, span {
 .channel {
 	margin-bottom: 0px;
 	margin-left: 5px;
-	padding-left: 4px;
 	line-height: 1.4;
+	display: inline;
 }
 
-.channel:hover {
+.x {
+	margin: 4px 4px 0 0;
+}
+
+#channel {
+	display: inline;
+}
+
+.channelListItem {
+	display: flex;
+	justify-content: space-between;
+}
+
+.channelListItem:hover {
 	background-color: rgba(255,255,255,0.15);
 }
 

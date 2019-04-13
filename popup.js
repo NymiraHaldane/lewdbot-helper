@@ -1,4 +1,3 @@
-var counter = 2;
 var gottenChannel = undefined;
 var channelId = function(id) { val = id; };;
 var element;
@@ -37,14 +36,19 @@ function saveChanges(textarea) {
 };
 
 function createListItem(channel) {
-	$("#channelGroup").append('<p class="channel" id="' + channel + '">' + channel + '</p>');
+	$("#channelGroup").append('<div class="channelListItem"><p class="channel">' +
+					channel + '</p><img class="x" id="' + channel + '" src="images/x-24.png" height="14" width="14"></div>');
 	document.getElementById(channel).addEventListener('click', function(e) {
 		removeChannel(channel, e)
 	});
 };
 
-function removeChannel(channel, e) {
-	e.target.remove();
+function removeChannel(channel, elem) {
+	document.getElementById(channel).parentElement.remove();
+	elem.target.remove();
+	removeChannelData(elem.target.id).then(function() {
+		removeChannelName(elem.target.id);
+	});
 };
 
 function listChannels() {
@@ -73,6 +77,12 @@ function createChannelMenu(channel) {
   });
 };
 
+function removeValue(arr, value) {
+	return arr.filter(function(name) {
+		return name != value;
+	});
+};
+
 //TODO clean up setChannelName
 function setChannelName() {
 	return new Promise((resolve, reject) => {
@@ -93,10 +103,28 @@ function setChannelName() {
 				createListItem(channelName);
 				createChannelMenu(channelName);
 			};
-			result.channelNames = names;
-			chrome.storage.sync.set({channelNames: result.channelNames});
+			chrome.storage.sync.set({channelNames: names});
 			resolve("success");
 		});
+	});
+};
+
+function removeChannelData(channel) {
+	return new Promise((resolve, reject) => {
+		chrome.storage.sync.remove(channel, function(result) {
+			chrome.contextMenus.remove(channel);
+			resolve("success");
+		});
+	});
+};
+
+function removeChannelName(channel) {
+	chrome.storage.sync.get('channelNames', function(result) {
+		var names = result.channelNames;
+		result.channelNames = [];
+		names = removeValue(names, channel);
+		alert('Channel ' + channel + ' removed.');
+		chrome.storage.sync.set({channelNames: names});
 	});
 };
 
@@ -136,5 +164,6 @@ function getChannelId() {
 function getKeyPress(e){
 	if(e.keyCode == 13){
 		saveChanges(element);
+		element.value = '';
 	};
 };
