@@ -68,7 +68,6 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
   if (info.parentMenuItemId === "post-image-to-telegram") {
     var tabUrl = new URL(tab.url);
     getTargetChannel(info).then(function(channelId) {
-      alert(info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1));
       if (info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) == ('gif' || 'webm' || 'mp4')) {
         sendVideo(info, channelId, tabUrl);
       } else {

@@ -132,10 +132,13 @@ function checkChannelExists(result) {
 	return new Promise((resolve, reject) => {
 		var count = 0;
 		result.forEach(function(update) {
-			if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
-				count++;
-				alert(update.message.chat.id + ' ' + count)
-				channelId = update.message.chat.id;
+			if (update.message == undefined) {
+				return;
+			} else {
+				if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
+					count++;
+					channelId = update.message.chat.id;
+				};
 			};
 		});
 		resolve(count);
