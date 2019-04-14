@@ -137,7 +137,7 @@ function checkChannelExists(result) {
 				channelId = update.message.chat.id;
 			};
 		});
-		resolve(count)
+		resolve(count);
 	});
 };
 

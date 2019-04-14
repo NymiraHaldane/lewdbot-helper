@@ -25,24 +25,53 @@ chrome.storage.sync.get('channelNames', function(result) {
 
 var channelData;
 
-function postTo(info) {
+function getTargetChannel(info) {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(info.menuItemId, function(result) {
       resolve(result[info.menuItemId]);
     });
   });
-}
+};
+
+function sendMessage(info, channelId, tabUrl) {
+  const Http = new XMLHttpRequest();
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendMessage?chat_id=' + channelId + '&text=%5BSource%5D%28' + tabUrl[0] + '&parse_mode=markdown&disable_web_page_preview=true';
+  Http.open("POST", url);
+  Http.send();
+};
+
+function getPageUrl() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function(tabs) {
+      var tabUrl = new URL(tabs[0].url);
+      tabUrl = [tabUrl, tabUrl.hostname]
+      resolve(tabUrl);
+    });
+  });
+};
+
+function sendImage(info, channelId) {
+  return new Promise((resolve, reject) => {
+    const Http = new XMLHttpRequest();
+    const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
+    Http.open("POST", url);
+    Http.send();
+    resolve("success");
+  });
+};
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
-  postTo(info).then(function(channelId) {
+  getTargetChannel(info).then(function(channelId) {
     if (info.parentMenuItemId === "post-image-to-telegram") {
-      const Http = new XMLHttpRequest();
-      const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
-      Http.open("POST", url);
-      Http.send();
-      Http.onreadystatechange = (e) => {
-        console.log(Http.responseText)
-      };
+      sendImage(info, channelId).then(function() {
+        getPageUrl().then(function(tabUrl) {
+          if (tabUrl[1] == 'e621.net') {
+            sendMessage(info, channelId, tabUrl);
+          } else {
+            return;
+          }
+        });
+      });
     };
   });
 });
