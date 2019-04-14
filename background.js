@@ -5,7 +5,7 @@
 chrome.contextMenus.create({
   id: "post-image-to-telegram",
   title: "Post to Channel",
-  contexts: ["image"],
+  contexts: ["image", "video"],
 });
 
 chrome.storage.sync.get('channelNames', function(result) {
@@ -17,7 +17,7 @@ chrome.storage.sync.get('channelNames', function(result) {
         parentId: "post-image-to-telegram",
         id: channel,
         title: 'Post to ' + channel,
-        contexts: ["image"],
+        contexts: ["image", "video"],
       });
     });
   };
@@ -40,25 +40,40 @@ function sendMessage(info, channelId, tabUrl) {
   Http.send();
 };
 
-function sendImage(info, channelId) {
-  return new Promise((resolve, reject) => {
-    const Http = new XMLHttpRequest();
-    const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
-    Http.open("POST", url);
-    Http.send();
-    resolve("success");
-  });
+function sendImage(info, channelId, tabUrl) {
+  const Http = new XMLHttpRequest();
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
+  Http.open("POST", url);
+  Http.send();
+  Http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      sendMessage(info, channelId, tabUrl);
+    };
+  };
+};
+
+function sendVideo(info, channelId, tabUrl) {
+  const Http = new XMLHttpRequest();
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendVideo?chat_id=' + channelId + '&video=' + info.srcUrl;
+  Http.open("POST", url);
+  Http.send();
+  Http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      sendMessage(info, channelId, tabUrl);
+    };
+  };
 };
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
   if (info.parentMenuItemId === "post-image-to-telegram") {
+    var tabUrl = new URL(tab.url);
     getTargetChannel(info).then(function(channelId) {
-      var tabUrl = new URL(tab.url);
-      sendImage(info, channelId).then(function() {
-        if (tabUrl.hostname == 'e621.net') {
-          sendMessage(info, channelId, tabUrl);
-        };
-      });
+      alert(info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1));
+      if (info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) == ('gif' || 'webm' || 'mp4')) {
+        sendVideo(info, channelId, tabUrl);
+      } else {
+        sendImage(info, channelId, tabUrl);
+      };
     });
   };
 });

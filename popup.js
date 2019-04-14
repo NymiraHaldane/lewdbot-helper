@@ -134,6 +134,7 @@ function checkChannelExists(result) {
 		result.forEach(function(update) {
 			if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
 				count++;
+				alert(update.message.chat.id + ' ' + count)
 				channelId = update.message.chat.id;
 			};
 		});
@@ -152,8 +153,8 @@ function getChannelId() {
 						resolve(channelId);
 					} else {
 						alert('Channel ' + channelName + ' not found.')
-					}
-				})
+					};
+				});
 			};
 		};
 		xmlhttp.open("GET", "https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/getUpdates", true);
