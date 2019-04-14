@@ -1,11 +1,10 @@
 {
   "name": "LewdBot Helper",
-  "version": "0.2",
+  "version": "0.2.1",
   "description": "Post an image to a given channel from anywhere!",
   "permissions" : [
     "storage",
     "contextMenus",
-    "tabs",
     "activeTab",
     "https://*.twitter.com/*",
     "https://e621.net/*",
