@@ -1,6 +1,6 @@
 body {
 	/*background-color: rgb(39, 147, 217);*/
-	background-color: #333;
+	background-color: #5682A3;
 	color: #fff;
 	margin-top: 0px;
 	width: 300px;
@@ -21,7 +21,7 @@ p, h1, h2, h3, h4, span {
 }
 
 #telegramLogo {
-	margin: -2px 5px 0 0;
+	margin: -1px 4px 0 0;
 }
 
 #channelGroup {
