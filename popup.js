@@ -134,12 +134,10 @@ function checkChannelExists(result) {
 		result.forEach(function(update) {
 			if (update.message == undefined) {
 				return;
-			} else {
-				if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
-					count++;
-					channelId = update.message.chat.id;
-				};
-			};
+			} else if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
+				count++;
+				channelId = update.message.chat.id;
+			} else ;
 		});
 		resolve(count);
 	});
