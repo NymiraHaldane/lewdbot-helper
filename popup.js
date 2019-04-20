@@ -12,7 +12,7 @@ try {
 	});
 }
 catch(error) {
-	console.error(error);
+	console.log(error);
 };
 
 function saveChanges(textarea) {
@@ -73,7 +73,7 @@ function createChannelMenu(channel) {
     parentId: "post-image-to-telegram",
     id: channel,
     title: 'Post to ' + channel,
-    contexts: ["image"],
+    contexts: ["image", "video"],
   });
 };
 
@@ -137,7 +137,9 @@ function checkChannelExists(result) {
 			} else if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
 				count++;
 				channelId = update.message.chat.id;
-			} else ;
+			} else {
+				return;
+			};
 		});
 		resolve(count);
 	});

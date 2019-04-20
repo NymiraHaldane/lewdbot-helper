@@ -1,7 +1,7 @@
 {
-  "name": "LewdBot Helper",
+  "name": "Telegram Media Quickpost",
   "version": "0.2.3",
-  "description": "Post an image to a given channel from anywhere!",
+  "description": "Post an image, gif, or video to a given channel from anywhere!",
   "permissions" : [
     "storage",
     "contextMenus",
