@@ -55,7 +55,6 @@ function getWebm(info, channelId, tabUrl) {
       break;
     };
   };
-  console.log('EXITED FUNCTION');
 };
 
 async function toFile(videoData) {
@@ -133,6 +132,7 @@ function sendImage(info, channelId, tabUrl) {
 function sendVideo(info, channelId, tabUrl) {
   const Http = new XMLHttpRequest();
   const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendVideo?chat_id=' + channelId + '&video=' + info.srcUrl;
+  console.log(url);
   Http.open("POST", url);
   Http.send();
   Http.onload = function() {
@@ -142,17 +142,42 @@ function sendVideo(info, channelId, tabUrl) {
   };
 };
 
+function getImageSize(url) {
+  return new Promise((resolve, reject) => {
+    var imageFile = new XMLHttpRequest();
+    imageFile.open('GET', proxy + url, true);
+    imageFile.send();
+    imageFile.onload = function() {
+      if (this.status == 200) {
+        resolve(imageFile.getResponseHeader('Content-Length'));
+      };
+    };
+  });
+};
+
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
   if (info.parentMenuItemId === "post-image-to-telegram") {
     var tabUrl = new URL(tab.url);
     console.log(info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1));
     getTargetChannel(info).then(function(channelId) {
-      if (info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) == ('gif' || 'mp4')) {
+      if (['gif', 'mp4'].includes(info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1))) {
+        console.log('sendVideo');
         sendVideo(info, channelId, tabUrl);
-      } else if (info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) == ('webm')) {
+      } else if (info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) == 'webm') {
         getWebm(info, channelId, tabUrl);
+        console.log('sendWebm');
+      } else if (['jpg', 'png', 'jpeg', 'jpg:large'].includes(info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1))) {
+        getImageSize(info.srcUrl).then(function(size) {
+          if (size > 10485760) {
+              console.log('big');
+          } else {
+            console.log('small');
+            console.log('sendImage');
+            sendImage(info, channelId, tabUrl);
+          };
+        });
       } else {
-        sendImage(info, channelId, tabUrl);
+        alert('File type ' + info.srcUrl.substring(info.srcUrl.lastIndexOf('.')+1) + ' unsupported.');
       };
     });
   };

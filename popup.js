@@ -1,5 +1,5 @@
 var gottenChannel = undefined;
-var channelId = function(id) { val = id; };;
+var channelId = function(id) { val = id };
 var element;
 var channelName = undefined;
 
@@ -8,7 +8,6 @@ try {
 		listChannels();
 		element = document.getElementById("channelName");
 		element.addEventListener('keypress', getKeyPress);
-
 	});
 }
 catch(error) {
