@@ -9,8 +9,7 @@ try {
 		element = document.getElementById("channelName");
 		element.addEventListener('keypress', getKeyPress);
 	});
-}
-catch(error) {
+} catch(error) {
 	console.log(error);
 };
 

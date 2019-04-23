@@ -1,0 +1,23 @@
+{
+  "name": "telegram-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "background.js",
+  "dependencies": {
+    "ffmpeg.js": "^3.1.9001"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NymiraHaldane/telegram-helper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NymiraHaldane/telegram-helper/issues"
+  },
+  "homepage": "https://github.com/NymiraHaldane/telegram-helper#readme"
+}
