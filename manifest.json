@@ -6,30 +6,72 @@
     "storage",
     "contextMenus",
     "activeTab",
-    "https://*.twitter.com/*",
     "https://e621.net/*",
+    "https://imgur.com/*",
+    "https://*.flickr.com/*",
+    "https://*.tumblr.com/*",
+    "https://*.twitter.com/*",
+    "https://*.patreon.com/*",
+    "https://*.snapfish.com/*",
+    "https://*.facebook.com/*",
+    "https://*.pinterest.com/*",
+    "https://photobucket.com/*",
+    "https://*.instagram.com/*",
+    "https://*.deviantart.com/*",
+    "https://*.shutterfly.com/*",
+    "https://rule34.paheal.net/*",
     "https://*.furaffinity.net/*",
-    "https://u18chan.com/*"
+    "https://*.webmfiles.org/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://*.twitter.com/*",
         "https://e621.net/*",
+        "https://imgur.com/*",
+        "https://*.flickr.com/*",
+        "https://*.tumblr.com/*",
+        "https://*.twitter.com/*",
+        "https://*.patreon.com/*",
+        "https://*.snapfish.com/*",
+        "https://*.facebook.com/*",
+        "https://*.pinterest.com/*",
+        "https://photobucket.com/*",
+        "https://*.instagram.com/*",
+        "https://*.deviantart.com/*",
+        "https://*.shutterfly.com/*",
+        "https://rule34.paheal.net/*",
         "https://*.furaffinity.net/*",
-        "https://u18chan.com/*"
+        "https://*.webmfiles.org/*"
       ],
-      "js": ["popup.js"],
-      "run_at": "document_idle"
+      "run_at": "document_end",
+      "css": ["stylesheets/alerts.css"],
+      "js": [
+        "scripts/jquery.min.js",
+        "scripts/bootstrap.min.js",
+        "scripts/bootstrap-notify.js",
+        "scripts/content.js"
+      ]
     }
   ],
   "background" : {
-    "scripts": ["background.js"],
+    "scripts": ["scripts/background.js"],
     "matches": [
-        "https://*.twitter.com/*",
-        "https://e621.net/*",
-        "https://*.furaffinity.net/*",
-        "https://u18chan.com/*"
+      "https://e621.net/*",
+      "https://imgur.com/*",
+      "https://*.flickr.com/*",
+      "https://*.tumblr.com/*",
+      "https://*.twitter.com/*",
+      "https://*.patreon.com/*",
+      "https://*.snapfish.com/*",
+      "https://*.facebook.com/*",
+      "https://*.pinterest.com/*",
+      "https://photobucket.com/*",
+      "https://*.instagram.com/*",
+      "https://*.deviantart.com/*",
+      "https://*.shutterfly.com/*",
+      "https://rule34.paheal.net/*",
+      "https://*.furaffinity.net/*",
+      "https://*.webmfiles.org/*"
     ]
   },
 	"icons": {

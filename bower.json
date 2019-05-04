@@ -1,0 +1,20 @@
+{
+  "name": "telegram-helper",
+  "description": "",
+  "main": "background.js",
+  "authors": [
+    "NymiraHaldane <redwallerinside@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/NymiraHaldane/telegram-helper",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "remarkable-bootstrap-notify": "^3.1.3"
+  }
+}
