@@ -105,7 +105,7 @@ function sendMessage(info, channelId, tabUrl) {
     return;
   }
   const Http = new XMLHttpRequest();
-  const url = 'https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/sendMessage?chat_id=' + channelId + '&text=%5BSource%5D%28' + postUrl + '&parse_mode=markdown&disable_web_page_preview=true&disable_notification=true';
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendMessage?chat_id=' + channelId + '&text=%5BSource%5D%28' + postUrl + '&parse_mode=markdown&disable_web_page_preview=true&disable_notification=true';
   Http.open("POST", url);
   Http.send();
   console.log('sendMessage');
@@ -116,7 +116,7 @@ function sendWebm(info, channelId, tabUrl, video) {
   var formData = new FormData();
   formData.append('video', video);
   const Http = new XMLHttpRequest();
-  const url = 'https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/sendVideo?chat_id=' + channelId + '&video';
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendVideo?chat_id=' + channelId + '&video';
   Http.open("POST", url);
   Http.send(formData);
   Http.onload = function() {
@@ -130,7 +130,7 @@ function sendWebm(info, channelId, tabUrl, video) {
 function sendVideo(info, channelId, tabUrl) {
   chrome.storage.sync.set({alert: 'sending-video'});
   const Http = new XMLHttpRequest();
-  const url = 'https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/sendVideo?chat_id=' + channelId + '&video=' + info.srcUrl;
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendVideo?chat_id=' + channelId + '&video=' + info.srcUrl;
   console.log(url);
   Http.open("POST", url);
   Http.send();
@@ -159,7 +159,7 @@ function sendImageFile(info, channelId, tabUrl, image) {
   var formData = new FormData();
   formData.append('photo', image);
   const Http = new XMLHttpRequest();
-  const url = 'https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/sendPhoto?chat_id=' + channelId + '&photo';
+  const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo';
   Http.open("POST", url);
   Http.send(formData);
   Http.onload = function() {
@@ -175,7 +175,7 @@ function sendImageFile(info, channelId, tabUrl, image) {
 function sendImage(info, channelId, tabUrl) {
   return new Promise((resolve, reject) => {
     const Http = new XMLHttpRequest();
-    const url = 'https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
+    const url = 'https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/sendPhoto?chat_id=' + channelId + '&photo=' + info.srcUrl;
     Http.open("POST", url);
     Http.send();
     Http.onload = function() {

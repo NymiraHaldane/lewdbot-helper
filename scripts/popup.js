@@ -158,7 +158,7 @@ function getChannelId() {
 				});
 			};
 		};
-		xmlhttp.open("GET", "https://api.telegram.org/bot844128660:AAEH4h7IhOM0BL7RL4wOdfa0EFhoVS4-cSE/getUpdates", true);
+		xmlhttp.open("GET", "https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/getUpdates", true);
 		xmlhttp.send();
 	});
 };
