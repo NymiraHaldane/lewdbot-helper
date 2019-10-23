@@ -1,19 +1,28 @@
-var gottenChannel = undefined;
 var channelId = function(id) { val = id };
-var element;
+var channelField;
+var userNameField;
 var channelName = undefined;
 
 try {
 	$(document).ready(function(){
 		listChannels();
-		element = document.getElementById("channelName");
-		element.addEventListener('keypress', getKeyPress);
+		channelField = document.getElementById("channelName");
+		userNameField = document.getElementById("userName");
+		chrome.storage.sync.get('userName', function(name) {
+			if (name.userName == undefined) {
+				return;
+			} else {
+				userNameField.value = name.userName;
+			};
+		});
+		channelField.addEventListener('keypress', listenChannelField);
+		userNameField.addEventListener('keypress', listenUserField);
 	});
 } catch(error) {
 	console.log(error);
 };
 
-function saveChanges(textarea) {
+function saveChannelField(textarea) {
 	// Get a value saved in the Channel field.
 	channelName = textarea.value;
 
@@ -128,18 +137,27 @@ function removeChannelName(channel) {
 
 function checkChannelExists(result) {
 	return new Promise((resolve, reject) => {
+		var user;
 		var count = 0;
-		result.forEach(function(update) {
-			if (update.message == undefined) {
-				return;
-			} else if (update.message.chat.title.toLowerCase() == channelName.toLowerCase()) {
-				count++;
-				channelId = update.message.chat.id;
+		chrome.storage.sync.get('userId', function(currentUser) {
+			result.forEach(function(update) {
+				if (update.message == undefined) {
+					return;
+				} else if (update.message.chat.type == 'private') {
+					return;
+				} else if ((update.message.chat.title.toLowerCase() == channelName.toLowerCase()) && (update.message.from.id == currentUser.userId)) {
+					count++;
+					channelId = update.message.chat.id;
+				} else {
+					return;
+				};
+			});
+			if (count > 0) {
+				resolve(true);
 			} else {
-				return;
+				resolve(false);
 			};
 		});
-		resolve(count);
 	});
 };
 
@@ -150,9 +168,9 @@ function getChannelId() {
 			if (this.readyState == 4 && this.status == 200) {
 				var channelData = JSON.parse(this.responseText);
 				checkChannelExists(channelData.result).then(function(result) {
-					if (result > 0) {
+					if (result == true) {
 						resolve(channelId);
-					} else {
+					} else if (result == false) {
 						alert('Channel ' + channelName + ' not found.')
 					};
 				});
@@ -163,9 +181,54 @@ function getChannelId() {
 	});
 };
 
-function getKeyPress(e){
-	if(e.keyCode == 13){
-		saveChanges(element);
-		element.value = '';
+function listenChannelField(e) {
+	if (e.keyCode == 13) {
+		saveChannelField(channelField);
+		channelField.value = '';
 	};
+};
+
+/* vvv Very Beta vvv */
+
+function listenUserField(e) {
+	if (e.keyCode == 13) {
+		if (!userNameField.value) {
+			alert("Please enter a username.");
+			return;
+		} else {
+			checkUserValidity(userNameField.value).then((result) => {
+				if (result == true) {
+					alert("User saved!")
+				} else if (result == false) {
+					alert("User not found.\n\nMake sure you've spelled your name correctly and have recently sent a message to @lewdbot_bot")
+				}
+			});
+		}
+	};
+};
+
+function checkUserValidity(username) {
+	return new Promise((resolve, reject) => {
+		var userCheck = new XMLHttpRequest();
+		userCheck.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var chatJSON = JSON.parse(this.responseText);
+				if (chatJSON.result.length == 0) {
+					resolve(false);
+				} else {
+					for (update of chatJSON.result) {
+						if (update.message.chat.type == 'private' && update.message.chat.username == username) {
+							chrome.storage.sync.set({userId: update.message.from.id});
+							chrome.storage.sync.set({userName: update.message.chat.username});
+							resolve(true);
+						} else {
+							resolve(false);
+						}
+					}
+				}
+			}
+		}
+		userCheck.open("GET", "https://api.telegram.org/bot852628376:AAEPCDd7CLjzglphkaspQ3DISjGkKpTtHnM/getUpdates", true);
+		userCheck.send();
+	});
 };
